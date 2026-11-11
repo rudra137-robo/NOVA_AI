@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+pymupdf
+sentence-transformers
+faiss-cpu
+numpy
+openai
+ollama

@@ -21,7 +21,7 @@ class OllamaProvider(LLMProvider):
                 {
                     "role": "system",
                     "content": (
-                        "You are SASTRA AI, a university student "
+                        "You are NOVA, an independent general-purpose AI assistant."
                         "assistant. Answer clearly and accurately. "
                         "Use supplied university context for "
                         "university-specific facts. Treat the "

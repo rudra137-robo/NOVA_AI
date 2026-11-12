@@ -1,7 +1,10 @@
 import json
-from app.model_client import chat_with_model
-from app.tools import TOOL_DEFINITIONS, execute_tool
+from app.providers.ollama_tool_client import chat_with_model
+from app.tools.registry import TOOL_DEFINITIONS, execute_tool
+import logging
+import time
 
+logger = logging.getLogger(__name__)
 
 
 SYSTEM_PROMPT = """
@@ -40,10 +43,21 @@ def generate_answer(history, user_message):
         {"role": "user", "content": user_message},
     ]
 
+    total_start = time.perf_counter()
+
     for step in range(MAX_TOOL_ROUNDS + 1):
+
+        call_start = time.perf_counter()
+
         assistant_message = chat_with_model(
             messages=messages,
             tools=TOOL_DEFINITIONS,
+        )
+
+        logger.info(
+            "NOVA model call %s took %.2f seconds",
+            step + 1,
+            time.perf_counter() - call_start,
         )
 
         messages.append(assistant_message)
@@ -58,6 +72,11 @@ def generate_answer(history, user_message):
                     "The model returned an empty final answer."
                 )
 
+            logger.info(
+                "NOVA total generation time: %.2f seconds",
+                time.perf_counter() - total_start,
+            )
+
             return answer
 
         if step == MAX_TOOL_ROUNDS:
@@ -70,7 +89,15 @@ def generate_answer(history, user_message):
             tool_name = function.get("name", "")
             arguments = function.get("arguments", {})
 
+            tool_start = time.perf_counter()
+
             result = execute_tool(tool_name, arguments)
+
+            logger.info(
+                "NOVA tool %s took %.2f seconds",
+                tool_name,
+                time.perf_counter() - tool_start,
+            )
 
             messages.append({
                 "role": "tool",

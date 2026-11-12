@@ -15,7 +15,7 @@ router = APIRouter(
     tags=["Knowledge"]
 )
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[5]
 
 INDEX_DIR = (
     ROOT / "data" / "index" / "vector_store"

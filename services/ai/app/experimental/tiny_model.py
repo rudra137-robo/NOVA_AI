@@ -5,7 +5,7 @@ import torch
 from model_training.generate_from_checkpoint import TinyTransformer
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CHECKPOINT_PATH = (
     PROJECT_ROOT
     / "model_training"

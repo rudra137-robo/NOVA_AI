@@ -3,7 +3,7 @@ import ast
 import operator
 from datetime import datetime
 
-from app.research import search_web
+from app.research.web_search import search_web
 
 
 # A deliberately limited calculator.
